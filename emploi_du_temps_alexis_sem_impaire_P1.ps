@@ -1,0 +1,202 @@
+%!PS
+%%DocumentMedia: a4 842 595 80 () ()
+
+/rawPageHeight 595 def
+/rawPageWidth 842 def
+
+<< /PageSize [rawPageWidth rawPageHeight] >> setpagedevice
+
+/mm { 2.834645669 mul } def
+
+/margin 10 mm def
+
+% arg stack: y x_right x_left  string 
+% prints the string at y, centered between x_left and x_right
+/centerText {
+	dup /Text exch def
+	stringwidth pop 2 div /HalfWidth exch def
+	dup /Left exch def
+	sub 2 div
+	HalfWidth sub
+	Left add
+	exch
+	moveto
+	Text show
+} def
+
+/Courier findfont               % load the font, for instance, Courier
+0 dict copy begin               % copy it to a new dictionary
+/Encoding ISOLatin1Encoding def % replace encoding vector
+/MyCourier /FontName def        % replace font name
+currentdict end
+dup /FID undef                  % remove internal data
+/MyCourier exch definefont pop  % define the new font 
+
+/Helvetica findfont               % load the font, for instance, Courier
+0 dict copy begin               % copy it to a new dictionary
+/Encoding ISOLatin1Encoding def % replace encoding vector
+/MyHelvetica /FontName def        % replace font name
+currentdict end
+dup /FID undef                  % remove internal data
+/MyHelvetica exch definefont pop  % define the new font 
+
+
+/pageWidth rawPageWidth margin 2 mul sub def
+/pageHeight rawPageHeight margin 2 mul sub def
+
+/nbCol 5 def
+/colWidth pageWidth nbCol div def
+
+%vertical lines
+/iVertLine 0 def
+nbCol 1 add
+{
+  newpath
+  margin iVertLine colWidth mul add margin moveto
+  0 pageHeight rlineto
+  stroke
+  iVertLine 1 add
+  /iVertLine exch def
+} repeat
+
+%horizontal lines
+/nbRow 9 def
+/rowHeight pageHeight nbRow div def
+/iHorizLine 0 def
+nbRow 1 add
+{
+  newpath
+  margin margin iHorizLine rowHeight mul add moveto
+  pageWidth 0 rlineto
+  stroke
+  iHorizLine 1 add
+  /iHorizLine exch def
+} repeat
+
+
+/MyHelvetica findfont 20 scalefont setfont
+
+/pageWidthHalf pageWidth 0.5 mul def
+
+%newpath
+%pageHeight .125 mul 10 sub pageWidthHalf 0 (Aaaaaa AAAAAA aa AAAAAAA) centerText
+%
+%newpath
+%pageHeight .125 mul 10 sub pageWidth pageWidthHalf (Aaaaaaaa Aaaaaaa) centerText
+%
+%newpath
+%pageHeight .375 mul 10 sub pageWidthHalf  0 (Aaaaaaaaa AA AAAA) centerText
+%
+%newpath
+%pageHeight .625 mul 10 sub pageWidthHalf 0 (Aaaaaa AAAAAA aa AAAAAAA) centerText
+%
+%newpath
+%pageHeight .625 mul 10 sub pageWidth pageWidthHalf (Aaaaaaaa Aaaaaaa) centerText
+%
+%newpath
+%pageHeight .875 mul 10 sub pageWidthHalf 0 (Aaaaaaaaa AA AAAA) centerText
+%
+%
+% arg stack: string iCol iRow 
+/placeText {
+  0.5 add rowHeight mul margin add /y exch def
+  dup colWidth mul margin add /x_right exch def
+  1 add colWidth mul margin add /x_left exch def
+  /text exch def
+  y x_right x_left text centerText
+} def
+
+newpath
+(Lundi) 0  nbRow 1 sub placeText
+
+newpath
+(Mardi) 1  nbRow 1 sub placeText
+
+newpath
+(Mercredi) 2  nbRow 1 sub placeText
+
+newpath
+(Jeudi) 3  nbRow 1 sub placeText
+
+newpath
+(Vendredi) 4  nbRow 1 sub placeText
+
+newpath
+([Vie de classe]) 0  nbRow 2 sub placeText
+
+newpath
+(Histoire Geo) 0  nbRow 4 sub placeText
+
+newpath
+(Francais) 0  nbRow 5 sub placeText
+
+newpath
+(AP Francais) 0  nbRow 7 sub placeText
+
+newpath
+(Mathematiques) 1 nbRow 2 sub placeText
+
+newpath
+(Anglais) 1  nbRow 3 sub placeText
+
+newpath
+(EPS) 1  nbRow 4 sub placeText
+
+newpath
+(EPS) 1  nbRow 5 sub placeText
+
+newpath
+(Physique Chimie) 1  nbRow 7 sub placeText
+
+newpath
+(AP Francais) 1  nbRow 8 sub placeText
+
+newpath
+(Anglais) 2  nbRow 2 sub placeText
+
+newpath
+(Mathematiques) 2  nbRow 3 sub placeText
+
+newpath
+(Histoire Geo) 2  nbRow 4 sub placeText
+
+newpath
+(Technologie) 2  nbRow 5 sub placeText
+
+newpath
+(Mathematiques) 3  nbRow 2 sub placeText
+
+newpath
+(Arts plastiques) 3  nbRow 3 sub placeText
+
+newpath
+(Musique) 3  nbRow 4 sub placeText
+
+newpath
+(Anglais) 3  nbRow 5 sub placeText
+
+newpath
+(SVT) 3  nbRow 7 sub placeText
+
+newpath
+(Histoire Geo) 3  nbRow 8 sub placeText
+
+newpath
+(Anglais) 4  nbRow 2 sub placeText
+
+newpath
+(Francais) 4  nbRow 3 sub placeText
+
+newpath
+(EPS) 4  nbRow 4 sub placeText
+
+newpath
+(EPS) 4  nbRow 5 sub placeText
+
+newpath
+(Mathematiques) 4  nbRow 7 sub placeText
+
+newpath
+(AP Maths) 4  nbRow 9 sub placeText
+
+
