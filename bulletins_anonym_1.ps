@@ -1,14 +1,16 @@
 %!PS
-%%DocumentMedia: a4 842 595 80 () ()
+%%DocumentMedia: a4 595 842 80 () ()
 
-/rawPageHeight 595 def
-/rawPageWidth 842 def
+/pageHeight 842 def
+/pageWidth 595 def
 
-<< /PageSize [rawPageWidth rawPageHeight] >> setpagedevice
+<< /PageSize [pageWidth pageHeight] >> setpagedevice
 
 /mm { 2.834645669 mul } def
 
 /margin 10 mm def
+
+
 
 % arg stack: y x_right x_left  string 
 % prints the string at y, centered between x_left and x_right
@@ -24,6 +26,7 @@
 	moveto
 	Text show
 } def
+
 
 /Courier findfont               % load the font, for instance, Courier
 0 dict copy begin               % copy it to a new dictionary
@@ -41,49 +44,51 @@ currentdict end
 dup /FID undef                  % remove internal data
 /MyHelvetica exch definefont pop  % define the new font 
 
-
-/pageWidth rawPageWidth margin 2 mul sub def
-/pageHeight rawPageHeight margin 2 mul sub def
-
-/nbCol 5 def
+/nbCol 2 def
 /colWidth pageWidth nbCol div def
 
 %vertical lines
-/iVertLine 0 def
-nbCol 1 add
+/iVertLine 1 def
+nbCol 1 sub
 {
   newpath
-  margin iVertLine colWidth mul add margin moveto
-  0 pageHeight rlineto
+  iVertLine colWidth mul 
+  margin
+  moveto
+  0 
+  pageHeight margin 2 mul sub
+  rlineto
   stroke
   iVertLine 1 add
   /iVertLine exch def
 } repeat
 
 %horizontal lines
-/nbRow 9 def
+/nbRow 4 def
 /rowHeight pageHeight nbRow div def
-/iHorizLine 0 def
-nbRow 1 add
+/iHorizLine 1 def
+nbRow 1 sub
 {
   newpath
-  margin margin iHorizLine rowHeight mul add moveto
-  pageWidth 0 rlineto
+  margin 
+  iHorizLine rowHeight mul moveto
+  pageWidth margin 2 mul sub
+  0 
+  rlineto
   stroke
   iHorizLine 1 add
   /iHorizLine exch def
 } repeat
 
+% separation lines
+/lineWidth pageWidth margin 2 mul sub def
 
-/MyHelvetica findfont 20 scalefont setfont
-
-/pageWidthHalf pageWidth 0.5 mul def
 
 % arg stack: string iCol iRow 
 /placeText {
-  0.5 add rowHeight mul margin add /y exch def
-  dup colWidth mul margin add /x_right exch def
-  1 add colWidth mul margin add /x_left exch def
+  0.5 add rowHeight mul /y exch def
+  dup colWidth mul /x_right exch def
+  1 add colWidth mul /x_left exch def
   /text exch def
   y x_right x_left text centerText
 } def
@@ -105,56 +110,16 @@ nbRow 1 add
      /iCol iCol 1 sub def
   } repeat
 } def
+/MyHelvetica findfont 20 scalefont setfont
 
-(Lundi)
-([Vie de classe])
-(Technologie)
-(Histoire Geo)
-(Francais)
-()
-(AP Francais)
-()
-()
-
-(Mardi)
-(Mathematiques)
-(Anglais)
-(EPS)
-(EPS)
-()
-(Physique Chimie)
-(AP Francais)
-()
-
-(Mercredi)
-(Anglais)
-(Mathematiques)
-(Histoire Geo)
-(Technologie)
-()
-()
-()
-()
-
-(Jeudi)
-(Mathematiques)
-(Arts plastiques)
-(Musique)
-(Anglais)
-()
-(SVT)
-(Histoire Geo)
-()
-
-(Vendredi)
-(Anglais)
-(Francais)
-(EPS)
-(EPS)
-()
-(Mathematiques)
-()
-(AP Maths)
+(Aaaaaa AAAAAA aa AAAAAAA)
+(Aaaaaaaa Aaaaaaa)
+(Aaaaaaaaa AA AAAA)
+(Aaaaaa AAAAAA aa AAAAAAA)
+(Aaaaaaaa Aaaaaaa)
+(Aaaaaaaaa AA AAAA)
+(Aaaaaa AAAAAA aa AAAAAAA)
+(Aaaaaaaa Aaaaaaa)
 fillTable
 
 
