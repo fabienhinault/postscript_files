@@ -81,7 +81,7 @@ nbRow 1 add
 
 % arg stack: string iCol iRow 
 /placeText {
-  0.5 add rowHeight mul margin add /y exch def
+  0.5 add rowHeight mul margin add 10 sub /y exch def
   dup colWidth mul margin add /x_right exch def
   1 add colWidth mul margin add /x_left exch def
   /text exch def
