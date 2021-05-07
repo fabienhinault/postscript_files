@@ -81,7 +81,9 @@ nbRow 1 add
 
 % arg stack: string iCol iRow 
 /placeText {
-  0.5 add rowHeight mul margin add 10 sub /y exch def
+  0.5 add rowHeight mul margin add
+  5 sub % = 20 / 4 valeur empirique 
+  /y exch def
   dup colWidth mul margin add /x_right exch def
   1 add colWidth mul margin add /x_left exch def
   /text exch def
@@ -106,55 +108,60 @@ nbRow 1 add
   } repeat
 } def
 
-(Lundi)
-([Vie de classe])
+/math (Math\351matiques) def 
+/hg (Histoire G\351o) def
+/fran (Fran\347ais) def
+/apfran (AP Fran\347ais) def
+
+(LUNDI)
+(SVT)
 (Technologie)
-(Histoire Geo)
-(Francais)
+hg
+fran
 ()
-(AP Francais)
-()
+apfran
+math
 ()
 
-(Mardi)
-(Mathematiques)
+(MARDI)
+math
 (Anglais)
 (EPS)
 (EPS)
 ()
 (Physique Chimie)
-(AP Francais)
+apfran
 ()
 
-(Mercredi)
+(MERCREDI)
 (Anglais)
-(Mathematiques)
-(Histoire Geo)
+fran
+hg
 (Technologie)
 ()
 ()
 ()
 ()
 
-(Jeudi)
-(Mathematiques)
-(Arts plastiques)
-(Musique)
+(JEUDI)
+math
+(EPS)
+(EPS)
 (Anglais)
 ()
 (SVT)
-(Histoire Geo)
+()
 ()
 
-(Vendredi)
+(VENDREDI)
 (Anglais)
-(Francais)
-(EPS)
-(EPS)
+fran
+(Arts plastiques)
+(Musique)
 ()
-(Mathematiques)
+math
+hg
 ()
-(AP Maths)
 fillTable
 
 
