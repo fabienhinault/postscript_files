@@ -35,33 +35,38 @@ dup /FID undef                  % remove internal data
 /colWidth pageWidth nbCol div def
 
 %vertical lines
-/iVertLine 0 def
-nbCol 1 add
-{
-  newpath
-  margin 2 mul iVertLine colWidth mul add margin moveto
-  0 pageHeight rlineto
-  stroke
-  iVertLine 1 add
-  /iVertLine exch def
-} repeat
+/drawVerticalLines {
+  /iVertLine 0 def
+  nbCol 1 add
+  {
+    newpath
+    margin 2 mul iVertLine colWidth mul add margin moveto
+    0 pageHeight rlineto
+    stroke
+    iVertLine 1 add
+    /iVertLine exch def
+  } repeat
+} def
+drawVerticalLines
 
 %horizontal lines
 /nbRow 9 def
 /rowHeight pageHeight nbRow div def
-/iHorizLine 0 def
-nbRow 1 add
-{
-  newpath
-  margin 2 mul
-  margin iHorizLine rowHeight mul add
-  moveto
-  pageWidth 0 rlineto
-  stroke
-  iHorizLine 1 add
-  /iHorizLine exch def
-} repeat
-
+/drawHorizontalLines {
+  /iHorizLine 0 def
+  nbRow 1 add
+  {
+    newpath
+    margin 2 mul
+    margin iHorizLine rowHeight mul add
+    moveto
+    pageWidth 0 rlineto
+    stroke
+    iHorizLine 1 add
+    /iHorizLine exch def
+  } repeat
+} def
+drawHorizontalLines
 
 
 /pageWidthHalf pageWidth 0.5 mul def
@@ -228,4 +233,85 @@ hg
 ()
 fillTable
 
+showpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+drawVerticalLines
+drawHorizontalLines
+
+/MyHelvetica findfont 13 scalefont setfont
+
+()
+()
+(08:20)
+(09:15)
+(09:20)
+(10:15)
+(10:25)
+(11:20)
+(11:25)
+(12:20)
+()
+()
+(14:00)
+(14:55)
+(15:00)
+(15:55)
+(16:05)
+(17:00)
+placeHours
+
+/MyHelvetica findfont 20 scalefont setfont
+
+(LUNDI)
+([Vie de classe])
+()
+hg
+fran
+()
+apfran
+()
+()
+
+(MARDI)
+math
+(Anglais)
+(EPS)
+(EPS)
+()
+(Physique Chimie)
+apfran
+()
+
+(MERCREDI)
+(Anglais)
+math
+hg
+(Technologie)
+()
+()
+()
+()
+
+(JEUDI)
+math
+(EPS)
+(EPS)
+(Anglais)
+()
+(SVT)
+hg
+()
+
+(VENDREDI)
+(Anglais)
+fran
+(Arts plastiques)
+(Musique)
+()
+math
+()
+(AP Maths)
+fillTable
+ 
+showpage
