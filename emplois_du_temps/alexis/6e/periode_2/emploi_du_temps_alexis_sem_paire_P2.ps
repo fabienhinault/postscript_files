@@ -10,20 +10,6 @@
 
 /margin 10 mm def
 
-% arg stack: y x_right x_left  string 
-% prints the string at y, centered between x_left and x_right
-/centerText {
-	dup /Text exch def
-	stringwidth pop 2 div /HalfWidth exch def
-	dup /Left exch def
-	sub 2 div
-	HalfWidth sub
-	Left add
-	exch
-	newpath
-	moveto
-	Text show
-} def
 
 /Courier findfont               % load the font, for instance, Courier
 0 dict copy begin               % copy it to a new dictionary
@@ -41,8 +27,8 @@ currentdict end
 dup /FID undef                  % remove internal data
 /MyHelvetica exch definefont pop  % define the new font 
 
-
-/pageWidth rawPageWidth margin 2 mul sub def
+% 1cm at left for hours
+/pageWidth rawPageWidth margin 3 mul sub def
 /pageHeight rawPageHeight margin 2 mul sub def
 
 /nbCol 5 def
@@ -53,7 +39,7 @@ dup /FID undef                  % remove internal data
 nbCol 1 add
 {
   newpath
-  margin iVertLine colWidth mul add margin moveto
+  margin 2 mul iVertLine colWidth mul add margin moveto
   0 pageHeight rlineto
   stroke
   iVertLine 1 add
@@ -67,7 +53,9 @@ nbCol 1 add
 nbRow 1 add
 {
   newpath
-  margin margin iHorizLine rowHeight mul add moveto
+  margin 2 mul
+  margin iHorizLine rowHeight mul add
+  moveto
   pageWidth 0 rlineto
   stroke
   iHorizLine 1 add
@@ -75,20 +63,95 @@ nbRow 1 add
 } repeat
 
 
-/MyHelvetica findfont 20 scalefont setfont
 
 /pageWidthHalf pageWidth 0.5 mul def
+
+% arg stack: y x_right x_left  string 
+% prints the string at y, centered between x_left and x_right
+/centerText {
+	dup % arg stack: y x_right x_left  string string
+	/Text % arg stack: y x_right x_left  string string /Text
+	exch % arg stack: y x_right x_left  string /Text string 
+	def % arg stack: y x_right x_left  string  
+	stringwidth % arg stack: y x_right x_left  dx (dy=0) 
+	pop % arg stack: y x_right x_left  dx  
+	2 % arg stack: y x_right x_left  dx 2 
+	div % arg stack: y x_right x_left  dx/2 
+	/HalfWidth % arg stack: y x_right x_left  dx/2 /HalfWidth 
+	exch % arg stack: y x_right x_left  /HalfWidth dx/2  
+	def % arg stack: y x_right x_left  
+	dup % arg stack: y x_right x_left x_left 
+	/Left % arg stack: y x_right x_left  x_left /Left 
+	exch % arg stack: y x_right x_left /Left  x_left 
+	def % arg stack: y x_right x_left 
+	sub % arg stack: y (x_left - x_right)
+	2 % arg stack: y (x_left - x_right) 2
+	div % arg stack: y (x_left - x_right)/2
+	HalfWidth % arg stack: y (x_left - x_right)/2 HalfWith
+	sub % arg stack: y ((x_left - x_right)/2 - HalfWith)
+	Left % arg stack: y ((x_left - x_right)/2 - HalfWith) x_left
+	add % arg stack: y ((x_left - x_right)/2 - HalfWith)+x_left
+	exch
+	newpath
+	moveto
+	Text
+	show
+} def
 
 % arg stack: string iCol iRow 
 /placeText {
   0.5 add rowHeight mul margin add
-  5 sub % = 20 / 4 valeur empirique 
+  5 sub % = 20 / 4 empiric value
   /y exch def
-  dup colWidth mul margin add /x_right exch def
-  1 add colWidth mul margin add /x_left exch def
+  dup colWidth mul margin 2 mul add /x_right exch def
+  1 add colWidth mul margin 2 mul add /x_left exch def
   /text exch def
   y x_right x_left text centerText
 } def
+
+/placeHours {
+  (00:00)
+  stringwidth pop
+  margin 2 mul 
+  exch
+  sub
+  2
+  sub
+  /x exch def
+  /iRow 0 def
+  nbRow {
+%  2 {
+    /hourBottom exch def
+    /hourTop exch def
+    margin rowHeight iRow mul add
+    dup
+    2 add x exch newpath moveto hourBottom show    
+    x exch rowHeight add 12 sub newpath moveto hourTop show    
+    /iRow iRow 1 add def
+  } repeat
+} def
+
+/MyHelvetica findfont 13 scalefont setfont
+
+()
+()
+(08:20)
+(09:15)
+(09:20)
+(10:15)
+(10:25)
+(11:20)
+(11:25)
+(12:20)
+()
+()
+(14:00)
+(14:55)
+(15:00)
+(15:55)
+(16:05)
+(17:00)
+placeHours
 
 % arg stack: all strings in columns iRow, iCol = 0,0 , 1,0 , ... , nRow-1,0 , 1,0, ...
 % 0,0 first in stack, nRow-1,nCol-1 last
@@ -99,7 +162,6 @@ nbRow 1 add
   {
      nbRow 
      {
-       newpath 
        iCol iRow placeText %eats 1 string in stack
        /iRow iRow 1 add def
      } repeat
@@ -112,6 +174,8 @@ nbRow 1 add
 /hg (Histoire G\351o) def
 /fran (Fran\347ais) def
 /apfran (AP Fran\347ais) def
+
+/MyHelvetica findfont 20 scalefont setfont
 
 (LUNDI)
 (SVT)
