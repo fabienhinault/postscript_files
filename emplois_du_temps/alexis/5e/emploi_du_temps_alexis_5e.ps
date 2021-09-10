@@ -35,20 +35,33 @@ dup /FID undef                  % remove internal data
 /colWidth pageWidth nbCol div def
 
 %vertical lines
+% args: xmin ymin xmax ymax nbLines
 /drawVerticalLines {
+  /nbLines exch def
+  /ymax exch def
+  /xmax exch def
+  /ymin exch def
+  /xmin exch def
+  /dxtotal xmax xmin sub def
+  /dytotal ymax ymin sub def
+  /dx dxtotal nbLines 1 sub div def
   /iVertLine 0 def
-  nbCol 1 add
+  nbLines
   {
     newpath
-    margin 2 mul iVertLine colWidth mul add margin moveto
-    0 pageHeight rlineto
+    xmin iVertLine dx mul add ymin moveto
+    0 dytotal rlineto
     stroke
     iVertLine 1 add
     /iVertLine exch def
   } repeat
 } def
+margin 2 mul
+margin
+rawPageWidth margin sub
+rawPageHeight margin sub
+6
 drawVerticalLines
-
 %horizontal lines
 /nbRow 9 def
 /rowHeight pageHeight nbRow div def
@@ -235,8 +248,13 @@ fillTable
 
 showpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+margin 2 mul
+margin
+rawPageWidth margin sub
+rawPageHeight margin sub
+6
 drawVerticalLines
+%drawGlobalVerticalLines
 drawHorizontalLines
 
 /MyHelvetica findfont 13 scalefont setfont
