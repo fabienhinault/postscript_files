@@ -1,0 +1,317 @@
+%!PS
+%%DocumentMedia: a4 842 595 80 () ()
+
+/rawPageHeight 595 def
+/rawPageWidth 842 def
+
+<< /PageSize [rawPageWidth rawPageHeight] >> setpagedevice
+
+/mm { 2.834645669 mul } def
+
+/margin 10 mm def
+
+
+/Courier findfont               % load the font, for instance, Courier
+0 dict copy begin               % copy it to a new dictionary
+/Encoding ISOLatin1Encoding def % replace encoding vector
+/MyCourier /FontName def        % replace font name
+currentdict end
+dup /FID undef                  % remove internal data
+/MyCourier exch definefont pop  % define the new font 
+
+/Helvetica findfont               % load the font, for instance, Courier
+0 dict copy begin               % copy it to a new dictionary
+/Encoding ISOLatin1Encoding def % replace encoding vector
+/MyHelvetica /FontName def        % replace font name
+currentdict end
+dup /FID undef                  % remove internal data
+/MyHelvetica exch definefont pop  % define the new font 
+
+% 1cm at left for hours
+/pageWidth rawPageWidth margin 3 mul sub def
+/pageHeight rawPageHeight margin 2 mul sub def
+
+/nbCol 5 def
+/colWidth pageWidth nbCol div def
+
+%vertical lines
+/drawVerticalLines {
+  /iVertLine 0 def
+  nbCol 1 add
+  {
+    newpath
+    margin 2 mul iVertLine colWidth mul add margin moveto
+    0 pageHeight rlineto
+    stroke
+    iVertLine 1 add
+    /iVertLine exch def
+  } repeat
+} def
+drawVerticalLines
+
+%horizontal lines
+/nbRow 9 def
+/rowHeight pageHeight nbRow div def
+/drawHorizontalLines {
+  /iHorizLine 0 def
+  nbRow 1 add
+  {
+    newpath
+    margin 2 mul
+    margin iHorizLine rowHeight mul add
+    moveto
+    pageWidth 0 rlineto
+    stroke
+    iHorizLine 1 add
+    /iHorizLine exch def
+  } repeat
+} def
+drawHorizontalLines
+
+
+/pageWidthHalf pageWidth 0.5 mul def
+
+% arg stack: y x_right x_left  string 
+% prints the string at y, centered between x_left and x_right
+/centerText {
+	dup % arg stack: y x_right x_left  string string
+	/Text % arg stack: y x_right x_left  string string /Text
+	exch % arg stack: y x_right x_left  string /Text string 
+	def % arg stack: y x_right x_left  string  
+	stringwidth % arg stack: y x_right x_left  dx (dy=0) 
+	pop % arg stack: y x_right x_left  dx  
+	2 % arg stack: y x_right x_left  dx 2 
+	div % arg stack: y x_right x_left  dx/2 
+	/HalfWidth % arg stack: y x_right x_left  dx/2 /HalfWidth 
+	exch % arg stack: y x_right x_left  /HalfWidth dx/2  
+	def % arg stack: y x_right x_left  
+	dup % arg stack: y x_right x_left x_left 
+	/Left % arg stack: y x_right x_left  x_left /Left 
+	exch % arg stack: y x_right x_left /Left  x_left 
+	def % arg stack: y x_right x_left 
+	sub % arg stack: y (x_left - x_right)
+	2 % arg stack: y (x_left - x_right) 2
+	div % arg stack: y (x_left - x_right)/2
+	HalfWidth % arg stack: y (x_left - x_right)/2 HalfWith
+	sub % arg stack: y ((x_left - x_right)/2 - HalfWith)
+	Left % arg stack: y ((x_left - x_right)/2 - HalfWith) x_left
+	add % arg stack: y ((x_left - x_right)/2 - HalfWith)+x_left
+	exch
+	newpath
+	moveto
+	Text
+	show
+} def
+
+% arg stack: string iCol iRow 
+/placeText {
+  0.5 add rowHeight mul margin add
+  5 sub % = 20 / 4 empiric value
+  /y exch def
+  dup colWidth mul margin 2 mul add /x_right exch def
+  1 add colWidth mul margin 2 mul add /x_left exch def
+  /text exch def
+  y x_right x_left text centerText
+} def
+
+/placeHours {
+  (00:00)
+  stringwidth pop
+  margin 2 mul 
+  exch
+  sub
+  2
+  sub
+  /x exch def
+  /iRow 0 def
+  nbRow {
+%  2 {
+    /hourBottom exch def
+    /hourTop exch def
+    margin rowHeight iRow mul add
+    dup
+    2 add x exch newpath moveto hourBottom show    
+    x exch rowHeight add 12 sub newpath moveto hourTop show    
+    /iRow iRow 1 add def
+  } repeat
+} def
+
+/MyHelvetica findfont 13 scalefont setfont
+
+()
+()
+(08:25)
+(09:20)
+(09:23)
+(10:18)
+(10:33)
+(10:28)
+(11:35)
+(12:30)
+()
+()
+(14:00)
+(14:55)
+(14:58)
+(15:53)
+(16:10)
+(17:05)
+placeHours
+
+% arg stack: all strings in columns iRow, iCol = 0,0 , 1,0 , ... , nRow-1,0 , 1,0, ...
+% 0,0 first in stack, nRow-1,nCol-1 last
+/fillTable {
+  /iCol nbCol 1 sub def
+  /iRow 0 def
+  nbCol
+  {
+     nbRow 
+     {
+       iCol iRow placeText %eats 1 string in stack
+       /iRow iRow 1 add def
+     } repeat
+     /iRow 0 def
+     /iCol iCol 1 sub def
+  } repeat
+} def
+
+/math (Math\351matiques) def 
+/hg (Histoire G\351o) def
+/fran (Fran\347ais) def
+/apfran (AP Fran\347ais) def
+
+/MyHelvetica findfont 20 scalefont setfont
+
+(LUNDI)
+()
+(Arts plastiques)
+(Allemand)
+(Musique)
+()
+(Anglais)
+fran
+hg
+
+(MARDI)
+([Vie de classe])
+(Technologie)
+math
+(Anglais)
+()
+(EPS)
+fran
+(Projet info num)
+
+(MERCREDI)
+hg
+fran
+(SVT)
+()
+()
+()
+()
+()
+
+(JEUDI)
+(Latin)
+(Anglais)
+math
+(Allemand)
+()
+fran
+hg
+()
+
+(VENDREDI)
+(Latin)
+(Physique Chimie)
+math
+fran
+()
+(EPS)
+(EPS)
+(Allemand)
+fillTable
+
+showpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+drawVerticalLines
+drawHorizontalLines
+
+/MyHelvetica findfont 13 scalefont setfont
+
+()
+()
+(08:25)
+(09:20)
+(09:23)
+(10:18)
+(10:33)
+(10:28)
+(11:35)
+(12:30)
+()
+()
+(14:00)
+(14:55)
+(14:58)
+(15:53)
+(16:10)
+(17:05)
+placeHours
+
+/MyHelvetica findfont 20 scalefont setfont
+
+(LUNDI)
+(Technologie)
+(Arts plastiques)
+math
+(Musique)
+()
+(Anglais)
+(SVT)
+hg
+
+(MARDI)
+(Physique Chimie)
+(Technologie)
+math
+(Anglais)
+()
+(EPS)
+fran
+()
+
+(MERCREDI)
+hg
+fran
+(SVT)
+()
+()
+()
+()
+()
+
+(JEUDI)
+(Latin)
+(Anglais)
+math
+(Allemand)
+()
+fran
+hg
+()
+
+(VENDREDI)
+(Latin)
+(Physique Chimie)
+math
+fran
+()
+(EPS)
+(EPS)
+(Allemand)
+fillTable
+ 
+showpage
