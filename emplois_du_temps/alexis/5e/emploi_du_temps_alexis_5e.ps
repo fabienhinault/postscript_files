@@ -63,9 +63,39 @@ rawPageHeight margin sub
 6
 drawVerticalLines
 %horizontal lines
+% args: xmin ymin xmax ymax nbLines
 /nbRow 9 def
 /rowHeight pageHeight nbRow div def
 /drawHorizontalLines {
+  /nbLines exch def
+  /ymax exch def
+  /xmax exch def
+  /ymin exch def
+  /xmin exch def
+  /dxtotal xmax xmin sub def
+  /dytotal ymax ymin sub def
+  /dy dytotal nbLines 1 sub div def
+  /iHorizLine 0 def
+  nbLines
+  {
+    newpath
+    xmin
+    ymin iHorizLine dy mul add
+    moveto
+    dxtotal 0 rlineto
+    stroke
+    iHorizLine 1 add
+    /iHorizLine exch def
+  } repeat
+} def
+margin 2 mul
+margin
+rawPageWidth margin sub
+rawPageHeight margin sub
+10
+drawHorizontalLines
+
+/drawGlobalHorizontalLines {
   /iHorizLine 0 def
   nbRow 1 add
   {
@@ -79,7 +109,8 @@ drawVerticalLines
     /iHorizLine exch def
   } repeat
 } def
-drawHorizontalLines
+%drawGlobalHorizontalLines
+
 
 
 /pageWidthHalf pageWidth 0.5 mul def
@@ -255,7 +286,13 @@ rawPageHeight margin sub
 6
 drawVerticalLines
 %drawGlobalVerticalLines
+margin 2 mul
+margin
+rawPageWidth margin sub
+rawPageHeight margin sub
+10
 drawHorizontalLines
+%drawGlobalHorizontalLines
 
 /MyHelvetica findfont 13 scalefont setfont
 
