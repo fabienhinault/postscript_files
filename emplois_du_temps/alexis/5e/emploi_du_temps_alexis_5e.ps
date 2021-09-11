@@ -149,7 +149,33 @@ drawHorizontalLines
 
 %(Toto) 0 0 2 margin mul margin pageWidth nbCol div pageHeight nbRow div 20 placeText
 
+% arg stack: 2*nbRows hours to place, followed by xmin ymin dy nRows fontSize
 /placeHours {
+  /fontSize exch def
+  /nRows exch def
+  /dy exch def
+  /ymin exch def
+  /xmin exch def
+  (00:00)
+  stringwidth pop
+  xmin
+  exch
+  sub
+  2
+  sub
+  /x exch def
+  /ybottom ymin def
+  nRows {
+    /hourBottom exch def
+    /hourTop exch def
+    ybottom
+    dup
+    2 add x exch newpath moveto hourBottom show    
+    x exch dy add 1 add fontSize sub newpath moveto hourTop show    
+    /ybottom ybottom dy add def
+  } repeat
+} def
+/placeGlobalHours {
   (00:00)
   stringwidth pop
   margin 2 mul 
@@ -160,7 +186,6 @@ drawHorizontalLines
   /x exch def
   /iRow 0 def
   nbRow {
-%  2 {
     /hourBottom exch def
     /hourTop exch def
     margin rowHeight iRow mul add
@@ -191,7 +216,13 @@ drawHorizontalLines
 (15:53)
 (16:10)
 (17:05)
+2 margin mul
+margin
+pageHeight nbRow div
+nbRow
+13
 placeHours
+%placeGlobalHours
 
 % arg stack: all strings in columns iRow, iCol = 0,0 , 1,0 , ... , nRow-1,0 , 1,0, ...
 % 0,0 first in stack, nRow-1,nCol-1 last
@@ -272,7 +303,7 @@ fillTable
 
 showpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-(Toto) 0 0 2 margin mul margin pageWidth nbCol div pageHeight nbRow div 20 placeText
+%(Toto) 0 0 2 margin mul margin pageWidth nbCol div pageHeight nbRow div 20 placeText
 
 margin 2 mul
 margin
@@ -290,6 +321,7 @@ drawHorizontalLines
 %drawGlobalHorizontalLines
 
 /MyHelvetica findfont 13 scalefont setfont
+
 
 ()
 ()
@@ -309,6 +341,11 @@ drawHorizontalLines
 (15:53)
 (16:10)
 (17:05)
+2 margin mul
+margin
+pageHeight nbRow div
+nbRow
+13
 placeHours
 
 /MyHelvetica findfont 20 scalefont setfont
