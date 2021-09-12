@@ -102,27 +102,13 @@ drawHorizontalLines
 % prints the string at y, centered between x_left and x_right
 /centerText {
 	dup % arg stack: y x_right x_left  string string
-	/Text % arg stack: y x_right x_left  string string /Text
-	exch % arg stack: y x_right x_left  string /Text string 
-	def % arg stack: y x_right x_left  string  
-	stringwidth % arg stack: y x_right x_left  dx (dy=0) 
-	pop % arg stack: y x_right x_left  dx  
-	2 % arg stack: y x_right x_left  dx 2 
-	div % arg stack: y x_right x_left  dx/2 
-	/HalfWidth % arg stack: y x_right x_left  dx/2 /HalfWidth 
-	exch % arg stack: y x_right x_left  /HalfWidth dx/2  
-	def % arg stack: y x_right x_left  
-	dup % arg stack: y x_right x_left x_left 
-	/Left % arg stack: y x_right x_left  x_left /Left 
-	exch % arg stack: y x_right x_left /Left  x_left 
-	def % arg stack: y x_right x_left 
-	sub % arg stack: y (x_left - x_right)
-	2 % arg stack: y (x_left - x_right) 2
-	div % arg stack: y (x_left - x_right)/2
-	HalfWidth % arg stack: y (x_left - x_right)/2 HalfWith
-	sub % arg stack: y ((x_left - x_right)/2 - HalfWith)
-	Left % arg stack: y ((x_left - x_right)/2 - HalfWith) x_left
-	add % arg stack: y ((x_left - x_right)/2 - HalfWith)+x_left
+	/Text exch def % arg stack: y x_right x_left  string  
+	stringwidth % arg stack: y x_right x_left  wx (wy=0) 
+	pop % arg stack: y x_right x_left  wx  
+	sub
+	add % arg stack: y (x_left + x_right - wx)
+	2 % arg stack: y (x_left + x_right - wx ) 2
+	div % arg stack: y (x_left + x_right - wx)/2
 	exch
 	newpath
 	moveto
@@ -130,24 +116,22 @@ drawHorizontalLines
 	show
 } def
 
-% arg stack: string iCol iRow xmin ymin dx dy fontSize
+% arg stack: string iCol iRow xmin ymin xLeft yBottom dx dy fontSize
 /placeText {
   /fontSize exch def
   /dy exch def
   /dx exch def 
-  /ymin exch def
-  /xmin exch def
-  % arg stack: string iCol iRow 
-  0.5 add dy mul ymin add
-  fontSize 4 div sub % empiric value
-  /y exch def
-  dup dx mul xmin add /x_right exch def
-  1 add dx mul xmin add /x_left exch def
+  /yBottom exch def
+  /xLeft exch def
+  /y yBottom 0.5 dy mul add
+    fontSize 4 div sub % empiric value
+  def
+  xLeft /x_right exch def
+  xLeft dx add /x_left exch def
   /text exch def
   y x_right x_left text centerText
 } def
 
-%(Toto) 0 0 2 margin mul margin pageWidth nbCol div pageHeight nbRow div 20 placeText
 
 % arg stack: 2*nbRows hours to place, followed by xmin ymin dy nRows fontSize
 /placeHours {
@@ -215,17 +199,22 @@ placeHours
   /xmin exch def
   /dx xmax xmin sub nCols div def
   /dy ymax ymin sub nRows div def
+  /xLeft xmax dx sub def
+  /yBottom ymin def
   /iCol nCols 1 sub def
   /iRow 0 def
   nCols
   {
      nRows
      {
-       iCol iRow xmin ymin dx dy fontSize placeText %eats 1 string in stack
+       xLeft yBottom dx dy fontSize placeText %eats 1 string in stack
        /iRow iRow 1 add def
+       /yBottom yBottom dy add def
      } repeat
      /iRow 0 def
      /iCol iCol 1 sub def
+     /yBottom ymin def
+     /xLeft xLeft dx sub def
   } repeat
 } def
 
