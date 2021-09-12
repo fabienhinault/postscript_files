@@ -175,27 +175,6 @@ drawHorizontalLines
     /ybottom ybottom dy add def
   } repeat
 } def
-/placeGlobalHours {
-  (00:00)
-  stringwidth pop
-  margin 2 mul 
-  exch
-  sub
-  2
-  sub
-  /x exch def
-  /iRow 0 def
-  nbRow {
-    /hourBottom exch def
-    /hourTop exch def
-    margin rowHeight iRow mul add
-    dup
-    2 add x exch newpath moveto hourBottom show    
-    x exch rowHeight add 12 sub newpath moveto hourTop show    
-    /iRow iRow 1 add def
-  } repeat
-} def
-
 /MyHelvetica findfont 13 scalefont setfont
 
 ()
@@ -224,18 +203,25 @@ nbRow
 placeHours
 %placeGlobalHours
 
-% arg stack: all strings in columns iRow, iCol = 0,0 , 1,0 , ... , nRow-1,0 , 1,0, ...
-% 0,0 first in stack, nRow-1,nCol-1 last
+% arg stack: all strings in columns ,
+% xmin ymin xmax ymax nRows nCols fontSize
 /fillTable {
-  /dx pageWidth nbCol div def
-  /dy pageHeight nbRow div def
-  /iCol nbCol 1 sub def
+  /fontSize exch def
+  /nCols exch def
+  /nRows exch def
+  /ymax exch def
+  /xmax exch def
+  /ymin exch def
+  /xmin exch def
+  /dx xmax xmin sub nCols div def
+  /dy ymax ymin sub nRows div def
+  /iCol nCols 1 sub def
   /iRow 0 def
-  nbCol
+  nCols
   {
-     nbRow 
+     nRows
      {
-       iCol iRow 2 margin mul margin dx dy 20 placeText %eats 1 string in stack
+       iCol iRow xmin ymin dx dy fontSize placeText %eats 1 string in stack
        /iRow iRow 1 add def
      } repeat
      /iRow 0 def
@@ -299,6 +285,14 @@ fran
 (EPS)
 (EPS)
 (Allemand)
+
+2 margin mul
+margin
+rawPageWidth margin sub
+rawPageHeight margin sub
+nbRow
+nbCol
+20
 fillTable
 
 showpage
@@ -399,6 +393,14 @@ fran
 (EPS)
 (EPS)
 (Allemand)
+
+2 margin mul
+margin
+rawPageWidth margin sub
+rawPageHeight margin sub
+nbRow
+nbCol
+20
 fillTable
  
 showpage
