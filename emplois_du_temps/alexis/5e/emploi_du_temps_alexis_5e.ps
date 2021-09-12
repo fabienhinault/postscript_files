@@ -158,7 +158,23 @@ drawHorizontalLines
     /ybottom ybottom dy add def
   } repeat
 } def
+
+/placeDays {
+  /nCols exch def
+  /y exch def
+  /dx exch def
+  % we need to begin from the right hence define xLeft
+  dx nCols 1 sub mul add
+  /xLeft exch def
+  nCols {
+    /text exch def
+    y xLeft dx text centerText
+    /xLeft xLeft dx sub def
+  } repeat
+} def
+
 /MyHelvetica findfont 13 scalefont setfont
+
 
 ()
 ()
@@ -184,7 +200,6 @@ pageHeight nbRow div
 nbRow
 13
 placeHours
-%placeGlobalHours
 
 % arg stack: all strings in columns ,
 % xmin ymin xmax ymax nRows nCols fontSize
@@ -210,6 +225,61 @@ placeHours
      /yBottom ymin def
      /xLeft xLeft dx sub def
   } repeat
+} def
+
+%arg stack:
+% hours
+% cell contents
+% fontName, hoursSize, contentSise
+/drawTimeSheet {
+  /contentFontSize exch def
+  /hoursFontSize exch def
+  /nCols exch def
+  /nRows exch def
+  /ymax exch def
+  /xmax exch def
+  /ymin exch def
+  /xmin exch def
+
+  xmin
+  ymin
+  xmax
+  ymax
+  nRows 1 add
+  drawHorizontalLines
+
+  xmin
+  ymin
+  xmax
+  ymax
+  nCols 1 add
+  drawVerticalLines
+
+  /MyHelvetica findfont contentFontSize scalefont setfont
+
+  xmin
+  xmax xmin sub nCols div
+  ymax 2 add
+  nCols
+  placeDays
+
+  xmin
+  ymin
+  xmax
+  ymax
+  nRows
+  nCols
+  contentFontSize
+  fillTable
+
+  /MyHelvetica findfont hoursFontSize scalefont setfont
+
+  xmin
+  ymin
+  ymax ymin sub nRows div
+  nRows
+  hoursFontSize
+  placeHours
 } def
 
 /math (Math\351matiques) def 
@@ -280,7 +350,6 @@ fillTable
 
 showpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%(Toto) 0 0 2 margin mul margin pageWidth nbCol div pageHeight nbRow div 20 placeText
 
 margin 2 mul
 margin
@@ -288,14 +357,12 @@ rawPageWidth margin sub
 rawPageHeight margin sub
 6
 drawVerticalLines
-%drawGlobalVerticalLines
 margin 2 mul
 margin
 rawPageWidth margin sub
 rawPageHeight margin sub
 10
 drawHorizontalLines
-%drawGlobalHorizontalLines
 
 /MyHelvetica findfont 13 scalefont setfont
 
@@ -326,6 +393,8 @@ nbRow
 placeHours
 
 /MyHelvetica findfont 20 scalefont setfont
+
+
 
 (LUNDI)
 (Technologie)
@@ -377,6 +446,7 @@ fran
 (EPS)
 (Allemand)
 
+
 2 margin mul
 margin
 rawPageWidth margin sub
@@ -386,4 +456,84 @@ nbCol
 20
 fillTable
  
+showpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(08:25)
+(09:20)
+(09:23)
+(10:18)
+(10:33)
+(10:28)
+(11:35)
+(12:30)
+()
+()
+(14:00)
+(14:55)
+(14:58)
+(15:53)
+(16:10)
+(17:05)
+
+(Technologie)
+(Arts plastiques)
+math
+(Musique)
+()
+(Anglais)
+(SVT)
+hg
+
+(Physique Chimie)
+(Technologie)
+math
+(Anglais)
+()
+(EPS)
+fran
+()
+
+hg
+fran
+(SVT)
+()
+()
+()
+()
+()
+
+(Latin)
+(Anglais)
+math
+(Allemand)
+()
+fran
+hg
+()
+
+(Latin)
+(Physique Chimie)
+math
+fran
+()
+(EPS)
+(EPS)
+(Allemand)
+
+(LUNDI)
+(MARDI)
+(MERCREDI)
+(JEUDI)
+(VENDREDI)
+
+2 margin mul
+margin
+rawPageWidth margin sub
+rawPageHeight margin sub 16 sub
+8 %rows
+5 %cols
+13
+20
+drawTimeSheet
+
 showpage
