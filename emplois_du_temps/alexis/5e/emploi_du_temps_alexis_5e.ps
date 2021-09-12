@@ -98,17 +98,17 @@ drawHorizontalLines
 
 /pageWidthHalf pageWidth 0.5 mul def
 
-% arg stack: y x_right x_left  string 
-% prints the string at y, centered between x_left and x_right
+% arg stack: y xLeft boxWith string 
+% prints the string at y, centered n a box beginning at xLeft and boxWidth wide
 /centerText {
-	dup % arg stack: y x_right x_left  string string
-	/Text exch def % arg stack: y x_right x_left  string  
-	stringwidth % arg stack: y x_right x_left  wx (wy=0) 
-	pop % arg stack: y x_right x_left  wx  
+	dup % arg stack: y  x_left dx string string
+	/Text exch def % arg stack: y x_left dx string  
+	stringwidth % arg stack: y  x_left dx  wx (wy=0) 
+	pop % arg stack: y x_left dx wx  
 	sub
-	add % arg stack: y (x_left + x_right - wx)
-	2 % arg stack: y (x_left + x_right - wx ) 2
-	div % arg stack: y (x_left + x_right - wx)/2
+	2 % arg stack: y x_left (dx - wx ) 2
+	div % arg stack: y x_left (dx - wx)/2
+	add % arg stack: y x_left + (dx - wx)/2
 	exch
 	newpath
 	moveto
@@ -116,7 +116,8 @@ drawHorizontalLines
 	show
 } def
 
-% arg stack: string iCol iRow xmin ymin xLeft yBottom dx dy fontSize
+
+% arg stack: string xLeft yBottom dx dy fontSize
 /placeText {
   /fontSize exch def
   /dy exch def
@@ -126,10 +127,8 @@ drawHorizontalLines
   /y yBottom 0.5 dy mul add
     fontSize 4 div sub % empiric value
   def
-  xLeft /x_right exch def
-  xLeft dx add /x_left exch def
   /text exch def
-  y x_right x_left text centerText
+  y xLeft dx text centerText
 } def
 
 
@@ -201,18 +200,13 @@ placeHours
   /dy ymax ymin sub nRows div def
   /xLeft xmax dx sub def
   /yBottom ymin def
-  /iCol nCols 1 sub def
-  /iRow 0 def
   nCols
   {
      nRows
      {
        xLeft yBottom dx dy fontSize placeText %eats 1 string in stack
-       /iRow iRow 1 add def
        /yBottom yBottom dy add def
      } repeat
-     /iRow 0 def
-     /iCol iCol 1 sub def
      /yBottom ymin def
      /xLeft xLeft dx sub def
   } repeat
